@@ -7,13 +7,14 @@ test:
 
 api:
   handler: src/lambdas/openapi-backend-handler.handler
-  vpc:
-    securityGroupIds:
-      - Fn::ImportValue: '${self:custom.stage}-${self:service}-LambdaSecurityGroup'
-    subnetIds:
-      - Fn::ImportValue: '${self:custom.stage}-${self:service}-PrivateSubnetA'
-      - Fn::ImportValue: '${self:custom.stage}-${self:service}-PrivateSubnetB'
-      - Fn::ImportValue: '${self:custom.stage}-${self:service}-PrivateSubnetC'
+## Add these lines to the api function if you want to use a VPC
+#  vpc:
+#    securityGroupIds:
+#      - Fn::ImportValue: '${self:custom.stage}-${self:service}-LambdaSecurityGroup'
+#    subnetIds:
+#      - Fn::ImportValue: '${self:custom.stage}-${self:service}-PrivateSubnetA'
+#      - Fn::ImportValue: '${self:custom.stage}-${self:service}-PrivateSubnetB'
+#      - Fn::ImportValue: '${self:custom.stage}-${self:service}-PrivateSubnetC'
 
   events:
     - http:

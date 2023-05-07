@@ -1,0 +1,367 @@
+Deploy: Before
+DeployParameters: []
+
+Mappings:
+  RegionMap:
+    'ap-south-1':
+      AMI: 'ami-cacbbea5'
+    'eu-west-1':
+      AMI: 'ami-d41d58a7'
+    'ap-northeast-2':
+      AMI: 'ami-a04297ce'
+    'ap-northeast-1':
+      AMI: 'ami-1a15c77b'
+    'sa-east-1':
+      AMI: 'ami-b777e4db'
+    'ap-southeast-1':
+      AMI: 'ami-7243e611'
+    'ap-southeast-2':
+      AMI: 'ami-55d4e436'
+    'eu-central-1':
+      AMI: 'ami-0044b96f'
+    'us-east-1':
+      AMI: 'ami-c481fad3'
+    'us-east-2':
+      AMI: 'ami-71ca9114'
+    'us-west-1':
+      AMI: 'ami-de347abe'
+    'us-west-2':
+      AMI: 'ami-b04e92d0'
+
+Outputs:
+  PrivateSubnetA:
+    Description: "Private Subnet - A"
+    Value: {"Ref" : "PrivateSubnetA"}
+    Export:
+      Name: ${self:custom.stage}-${self:service}-PrivateSubnetA
+  PrivateSubnetB:
+    Description: "Private Subnet - B"
+    Value: {"Ref" : "PrivateSubnetB"}
+    Export:
+      Name: ${self:custom.stage}-${self:service}-PrivateSubnetB
+  PrivateSubnetC:
+    Description: "Private Subnet - C"
+    Value: {"Ref" : "PrivateSubnetC"}
+    Export:
+      Name: ${self:custom.stage}-${self:service}-PrivateSubnetC
+  SubnetA:
+    Description: "Public Subnet - A"
+    Value: {"Ref" : "SubnetA"}
+    Export:
+      Name: ${self:custom.stage}-${self:service}-SubnetA
+  SubnetB:
+    Description: "Public Subnet - B"
+    Value: {"Ref" : "SubnetB"}
+    Export:
+      Name: ${self:custom.stage}-${self:service}-SubnetB
+  SubnetC:
+    Description: "Public Subnet - C"
+    Value: {"Ref" : "SubnetC"}
+    Export:
+      Name: ${self:custom.stage}-${self:service}-SubnetC
+  LambdaSecurityGroup:
+    Description: Lambda Security Group
+    Value: {"Ref" : "LambdaSecurityGroup"}
+    Export:
+      Name: ${self:custom.stage}-${self:service}-LambdaSecurityGroup
+  VPC:
+    Description: VPC Logical Id
+    Value: {"Ref" : "VPC"}
+    Export:
+      Name: ${self:custom.stage}-${self:service}-VPC
+  VPCCIDR:
+    Description: VPC VPCCIDR
+    Value: ${self:custom.stages.vpcCidrBlock}
+    Export:
+      Name: ${self:custom.stage}-${self:service}-VPCCIDR
+  ECSCluster:
+    Description: ECS Cluster
+    Value: {"Ref" : "ECSCluster"}
+    Export:
+      Name: ${self:custom.stage}-${self:service}-ECSCluster
+
+Resources:
+
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: ${self:custom.stages.vpcCidrBlock}
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: "${self:custom.stage}-${self:custom.region}-${self:service}-VPC"
+        - Key: App
+          Value: '${self:custom.stage}-${self:service}'
+        - Key: Environment
+          Value: '${self:custom.stage}'
+
+
+
+  VPCInternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: "${self:custom.stage}-${self:custom.region}-${self:service}-VPCInternetGateway"
+        - Key: App
+          Value: '${self:custom.stage}-${self:service}'
+        - Key: Environment
+          Value: '${self:custom.stage}'
+
+
+  VPCInternetGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: {Ref: VPCInternetGateway}
+      VpcId: {Ref: VPC}
+
+  VPCRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: {Ref: VPC}
+
+  VPCPrivateRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: {Ref: VPC}
+
+  NATIP:
+    Type: 'AWS::EC2::EIP'
+    Properties:
+      Domain: vpc
+  NatGateway:
+    Type: 'AWS::EC2::NatGateway'
+    Properties:
+      AllocationId: { Fn::GetAtt: ["NATIP","AllocationId"] }
+      SubnetId: {Ref: SubnetA}
+  NATRoute:
+    Type: 'AWS::EC2::Route'
+    Properties:
+      RouteTableId: { Ref: VPCPrivateRouteTable }
+      DestinationCidrBlock: '0.0.0.0/0'
+      NatGatewayId: {Ref: NatGateway}
+
+
+  InternetRoute:
+    Type: AWS::EC2::Route
+    DependsOn: VPCInternetGateway
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: {Ref: VPCInternetGateway}
+      RouteTableId: {Ref: VPCRouteTable}
+
+
+  SubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: "${self:custom.region}a"
+      CidrBlock: "${self:custom.stages.vpcCidrPrefix}.0.0/20"
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: "${self:custom.stage}-${self:service}-${self:custom.stages.vpcCidrPrefix}.0.0-15.254-public"
+        - Key: App
+          Value: '${self:custom.stage}-${self:service}'
+        - Key: Environment
+          Value: '${self:custom.stage}'
+
+      VpcId: { Ref: VPC }
+  SubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: "${self:custom.region}b"
+      CidrBlock: "${self:custom.stages.vpcCidrPrefix}.16.0/20"
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: "${self:custom.stage}-${self:service}-${self:custom.stages.vpcCidrPrefix}.16.0-31.254-public"
+        - Key: App
+          Value: '${self:custom.stage}-${self:service}'
+        - Key: Environment
+          Value: '${self:custom.stage}'
+
+      VpcId: { Ref: VPC }
+  SubnetC:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: "${self:custom.region}c"
+      CidrBlock: "${self:custom.stages.vpcCidrPrefix}.32.0/20"
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: "${self:custom.stage}-${self:service}-${self:custom.stages.vpcCidrPrefix}.32.0-47.254-public"
+        - Key: App
+          Value: '${self:custom.stage}-${self:service}'
+        - Key: Environment
+          Value: '${self:custom.stage}'
+
+      VpcId: { Ref: VPC }
+
+  PrivateSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: "${self:custom.region}a"
+      CidrBlock: "${self:custom.stages.vpcCidrPrefix}.48.0/20"
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: "${self:custom.stage}-${self:service}-${self:custom.stages.vpcCidrPrefix}.48.0-63.254-private"
+        - Key: App
+          Value: '${self:custom.stage}-${self:service}'
+        - Key: Environment
+          Value: '${self:custom.stage}'
+
+      VpcId: { Ref: VPC }
+  PrivateSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: "${self:custom.region}b"
+      CidrBlock: "${self:custom.stages.vpcCidrPrefix}.64.0/20"
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: "${self:custom.stage}-${self:service}-${self:custom.stages.vpcCidrPrefix}.64.0-79.254-private"
+        - Key: App
+          Value: '${self:custom.stage}-${self:service}'
+        - Key: Environment
+          Value: '${self:custom.stage}'
+
+      VpcId: { Ref: VPC }
+  PrivateSubnetC:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: "${self:custom.region}c"
+      CidrBlock: "${self:custom.stages.vpcCidrPrefix}.80.0/20"
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: "${self:custom.stage}-${self:service}-${self:custom.stages.vpcCidrPrefix}.80.0-95.254-private"
+        - Key: App
+          Value: '${self:custom.stage}-${self:service}'
+        - Key: Environment
+          Value: '${self:custom.stage}'
+
+      VpcId: { Ref: VPC }
+
+  DynamoDBEndpoint:
+    Type: "AWS::EC2::VPCEndpoint"
+    Properties:
+      RouteTableIds:
+        - { Ref: VPCRouteTable }
+        - { Ref: VPCPrivateRouteTable }
+      ServiceName: "com.amazonaws.${self:custom.region}.dynamodb"
+      VpcId: { Ref: VPC }
+
+  S3Endpoint:
+    Type: "AWS::EC2::VPCEndpoint"
+    Properties:
+      RouteTableIds:
+      - { Ref: VPCRouteTable }
+      - { Ref: VPCPrivateRouteTable }
+      ServiceName: "com.amazonaws.${self:custom.region}.s3"
+      VpcId: { Ref: VPC }
+
+  PrivateSubnetARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: {Ref: VPCPrivateRouteTable}
+      SubnetId: {Ref: PrivateSubnetA}
+  PrivateSubnetBRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: {Ref: VPCPrivateRouteTable}
+      SubnetId: {Ref: PrivateSubnetB}
+  PrivateSubnetCRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: {Ref: VPCPrivateRouteTable}
+      SubnetId: {Ref: PrivateSubnetC}
+
+  SubnetARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: {Ref: VPCRouteTable}
+      SubnetId: {Ref: SubnetA}
+  SubnetBRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: {Ref: VPCRouteTable}
+      SubnetId: {Ref: SubnetB}
+  SubnetCRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: {Ref: VPCRouteTable}
+      SubnetId: {Ref: SubnetC}
+
+  LambdaSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "${self:custom.stage}-${self:custom.region}-${self:service} Lambda Security Group"
+      VpcId: { Ref: VPC }
+      Tags:
+        - Key: Name
+          Value: "${self:custom.stage}-${self:service}-Lambda-SecurityGroup"
+        - Key: App
+          Value: '${self:custom.stage}-${self:service}'
+        - Key: Environment
+          Value: '${self:custom.stage}'
+
+
+
+  JumpboxSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "${self:custom.stage}-${self:custom.region}-${self:service} SSH OPEN"
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - FromPort: '22'
+          IpProtocol: tcp
+          ToPort: '22'
+          CidrIp: '0.0.0.0/0'
+
+  Jumpbox:
+    Type: AWS::EC2::Instance
+    Properties:
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          GroupSet:
+            - Ref: JumpboxSecurityGroup
+          SubnetId: { Ref: SubnetA }
+      InstanceType: t2.nano
+      ImageId: !FindInMap [RegionMap, !Ref 'AWS::Region', AMI]
+      KeyName: ${self:custom.stage}-${self:service}
+      Tags:
+        - Key: Name
+          Value: '${self:custom.stage}-${self:service}-jumpbox'
+        - Key: App
+          Value: '${self:custom.stage}-${self:service}'
+        - Key: Environment
+          Value: '${self:custom.stage}'
+
+
+  JumpboxDnsRecord:
+    Type: "AWS::Route53::RecordSet"
+    Properties:
+      HostedZoneName: "${self:custom.stages.zoneName}."
+      Comment: DNS for jumpbox
+      Name: "${self:custom.stage}-${self:custom.region}-${self:service}-jump.${self:custom.stages.zoneName}."
+      Type: A
+      TTL: '900'
+      ResourceRecords:
+        - !GetAtt Jumpbox.PublicIp
+
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: ${self:custom.stage}-${self:service}-ecsCluster
+      Tags:
+        - Key: Name
+          Value: '${self:custom.stage}-${self:service}-ecsCluster'
+        - Key: App
+          Value: '${self:custom.stage}-${self:service}'
+        - Key: Environment
+          Value: '${self:custom.stage}'
+
+
+

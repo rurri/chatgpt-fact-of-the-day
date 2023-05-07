@@ -8,6 +8,7 @@
     "create-migration": "./node_modules/db-migrate/bin/db-migrate -e local --config ./migrations/config/database.json create",
     "migration": "./node_modules/db-migrate/bin/db-migrate -e local --config ./migrations/config/database.json --migrations-dir ./migrations",
     "deploy": "sls deploy",
+    "sls": "sls",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,6 +24,7 @@
   "dependencies": {
     "openapi-backend": "^5.9.2",
     "require-all": "^3.0.0",
+    "uuid": "^9.0.0",
     "winston": "^3.8.2"
   },
   "devDependencies": {

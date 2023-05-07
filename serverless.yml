@@ -1,4 +1,4 @@
-service: chatGPT-Hello-World
+service: serverless-open-api-hello-world
 
 plugins:
   - serverless-prune-plugin
@@ -13,6 +13,12 @@ provider:
   region: us-west-2
   memorySize: 128
   timeout: 15
+  tags:
+    service: ${self:service}
+    environment: ${self:custom.stage}
+  stackTags:
+    service: ${self:service}
+    environment: ${self:custom.stage}
   apiGateway:
     shouldStartNameWithService: true
   environment:

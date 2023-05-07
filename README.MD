@@ -66,3 +66,16 @@ No CORS headers are added by default. A couple good places to add CORS headers a
 
 ## Testing
 A bunch of sample http requests are located in http-requests. These can be run directly for a Jetbrains product or imported into Postman.
+
+## Basic remote logs
+You can view basic remote logs with the sls command `npm run sls -- logs --function api` (Option `--tail` to follow logs)
+
+## SLS Commands
+Because serverless is installed as a local module and we don't use the global serverless to avoid conflicts and to lock our sls version to our project as a best practice,
+you may find it easier to run sls commands using the npm run sls command. For example, to deploy, you can run `npm run sls -- deploy`
+
+## VPC Setup
+Want your lambda to run in a VPC? Uncomment out the line:
+`vpc: ${file(./cfn/serverless-vpc.yml)}`
+Further, want a jumpbox? Uncomment out the EC2 launch template and the jumpbox security group in the serverless-vpc.yml file.
+Lastly uncomment out the vpc config in the servlerss-function.yml file.
