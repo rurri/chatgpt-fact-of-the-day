@@ -306,62 +306,64 @@ Resources:
         - Key: Environment
           Value: '${self:custom.stage}'
 
+#### Might also need a jumpbox to get to the private Subnet
 
 
-  JumpboxSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: "${self:custom.stage}-${self:custom.region}-${self:service} SSH OPEN"
-      VpcId: !Ref VPC
-      SecurityGroupIngress:
-        - FromPort: '22'
-          IpProtocol: tcp
-          ToPort: '22'
-          CidrIp: '0.0.0.0/0'
-
-  Jumpbox:
-    Type: AWS::EC2::Instance
-    Properties:
-      NetworkInterfaces:
-        - AssociatePublicIpAddress: "true"
-          DeviceIndex: "0"
-          GroupSet:
-            - Ref: JumpboxSecurityGroup
-          SubnetId: { Ref: SubnetA }
-      InstanceType: t2.nano
-      ImageId: !FindInMap [RegionMap, !Ref 'AWS::Region', AMI]
-      KeyName: ${self:custom.stage}-${self:service}
-      Tags:
-        - Key: Name
-          Value: '${self:custom.stage}-${self:service}-jumpbox'
-        - Key: App
-          Value: '${self:custom.stage}-${self:service}'
-        - Key: Environment
-          Value: '${self:custom.stage}'
+#  JumpboxSecurityGroup:
+#    Type: AWS::EC2::SecurityGroup
+#    Properties:
+#      GroupDescription: "${self:custom.stage}-${self:custom.region}-${self:service} SSH OPEN"
+#      VpcId: !Ref VPC
+#      SecurityGroupIngress:
+#        - FromPort: '22'
+#          IpProtocol: tcp
+#          ToPort: '22'
+#          CidrIp: '0.0.0.0/0'
 
 
-  JumpboxDnsRecord:
-    Type: "AWS::Route53::RecordSet"
-    Properties:
-      HostedZoneName: "${self:custom.stages.zoneName}."
-      Comment: DNS for jumpbox
-      Name: "${self:custom.stage}-${self:custom.region}-${self:service}-jump.${self:custom.stages.zoneName}."
-      Type: A
-      TTL: '900'
-      ResourceRecords:
-        - !GetAtt Jumpbox.PublicIp
+#  Jumpbox:
+#    Type: AWS::EC2::Instance
+#    Properties:
+#      NetworkInterfaces:
+#        - AssociatePublicIpAddress: "true"
+#          DeviceIndex: "0"
+#          GroupSet:
+#            - Ref: JumpboxSecurityGroup
+#          SubnetId: { Ref: SubnetA }
+#      InstanceType: t2.nano
+#      ImageId: !FindInMap [RegionMap, !Ref 'AWS::Region', AMI]
+#      KeyName: ${self:custom.stage}-${self:service}
+#      Tags:
+#        - Key: Name
+#          Value: '${self:custom.stage}-${self:service}-jumpbox'
+#        - Key: App
+#          Value: '${self:custom.stage}-${self:service}'
+#        - Key: Environment
+#          Value: '${self:custom.stage}'
 
-  ECSCluster:
-    Type: AWS::ECS::Cluster
-    Properties:
-      ClusterName: ${self:custom.stage}-${self:service}-ecsCluster
-      Tags:
-        - Key: Name
-          Value: '${self:custom.stage}-${self:service}-ecsCluster'
-        - Key: App
-          Value: '${self:custom.stage}-${self:service}'
-        - Key: Environment
-          Value: '${self:custom.stage}'
+#
+#  JumpboxDnsRecord:
+#    Type: "AWS::Route53::RecordSet"
+#    Properties:
+#      HostedZoneName: "${self:custom.stages.zoneName}."
+#      Comment: DNS for jumpbox
+#      Name: "${self:custom.stage}-${self:custom.region}-${self:service}-jump.${self:custom.stages.zoneName}."
+#      Type: A
+#      TTL: '900'
+#      ResourceRecords:
+#        - !GetAtt Jumpbox.PublicIp
+
+#  ECSCluster:
+#    Type: AWS::ECS::Cluster
+#    Properties:
+#      ClusterName: ${self:custom.stage}-${self:service}-ecsCluster
+#      Tags:
+#        - Key: Name
+#          Value: '${self:custom.stage}-${self:service}-ecsCluster'
+#        - Key: App
+#          Value: '${self:custom.stage}-${self:service}'
+#        - Key: Environment
+#          Value: '${self:custom.stage}'
 
 
 
