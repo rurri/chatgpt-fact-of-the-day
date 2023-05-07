@@ -4,6 +4,7 @@ test:
     - http:
         path: test
         method: get
+        cors: true
 
 api:
   handler: src/lambdas/openapi-backend-handler.handler
@@ -20,12 +21,31 @@ api:
     - http:
         path: /api/{proxy+}
         method: ANY
+        cors: true
 
 
 getOpenAPIDoc:
   handler: src/lambdas/get-openapi-doc.handler
   events:
     - http:
-        path: /api/openapi
+        path: /api/openapi.yaml
         method: GET
+        cors: true
 
+getAI:
+  handler: src/lambdas/get-ai-json.handler
+  cors: true
+  events:
+    - http:
+        path: /.well-known/ai-plugin.json
+        method: GET
+        cors: true
+
+getLogo:
+  handler: src/lambdas/get-logo.handler
+  cors: true
+  events:
+    - http:
+        path: /logo.png
+        method: GET
+        cors: true

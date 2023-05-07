@@ -1,7 +1,10 @@
 
 async function postResponseHandler(apiContext, event, lambdaContext) {
   const body = apiContext?.response?.body ?? null;
-  const headers = { ...apiContext.response.headers, 'x-request-id': lambdaContext.requestId };
+  const headers = { ...apiContext.response.headers,
+      'x-request-id': lambdaContext.requestId,
+      'content-type': 'application/x-yaml',
+  };
   const statusCode = apiContext.response.statusCode;
   if (statusCode && statusCode < 400 && event.httpMethod !== 'OPTIONS') {
     const isValidBody = apiContext.api.validateResponse(body, apiContext.operation, apiContext.response.statusCode);

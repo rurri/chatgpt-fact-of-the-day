@@ -1,0 +1,18 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "Random Fact Plugin",
+  "name_for_model": "random_fact",
+  "description_for_human": "Plugin that gives a random fact",
+  "description_for_model": "Plugin that gives a random fact. Facts can be filtered by a single word filter",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "http://localhost:3000/api/openapi.yaml",
+    "is_user_authenticated": false
+  },
+  "logo_url": "http://localhost:3000/logo.png",
+  "contact_email": "jason@rurri.com",
+  "legal_info_url": "http://www.example.com/legal"
+}

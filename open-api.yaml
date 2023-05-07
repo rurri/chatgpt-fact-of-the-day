@@ -8,39 +8,51 @@ info:
     name: MIT
     url: 'https://opensource.org/license/mit/'
   version: '1.0'
+servers:
+  - url: 'http://localhost:3000/api'
+    description: Localhost
 paths:
-  /hello:
+  /facts:
     get:
-      summary: Ask the server to say hello
+      summary: Fetch a random fact of the day
       description: >-
         Ask the server to say hello to you. Don't forget the "name" query param,
         which is required. Try it without if you want to see a 400 error.
-      operationId: hello_get
+      operationId: facts_get
       parameters:
-        - name: name
+        - name: filter_word
           in: query
-          description: The name the user wishes to be called by
-          required: true
+          description: >-
+            Filter facts, such that only facts that contain this word can be
+            returned
           schema:
             type: string
             minLength: 1
             maxLength: 255
-          example: John
-      responses: {}
+          example: penguin
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fact:
+                    type: string
+                    description: A random fact as a string of text
+                    example: >-
+                      The deepest underwater penguin dive is 1,772 feet by an
+                      Emperor Penguin
+                nullable: false
       security: []
       servers:
         - url: 'http://localhost:3000'
           description: For use in local development
-    trace:
-      description: >-
-        HTTP Method that has not been implemented in the scaffold. Use this
-        method to test the 501 Not Implemented error Response
-      operationId: DoesNotExist
-      responses: {}
-    delete:
-      operationId: hello_delete
-      responses: {}
-    summary: Server Hello
-    description: The only endpoint here is a GET. You should try it.
-components: {}
+    summary: Random Fact
+    description: Use this endpoint to get a random fact
+components:
+  schemas:
+    fact:
+      type: string
 

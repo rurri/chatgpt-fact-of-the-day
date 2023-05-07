@@ -25,7 +25,7 @@
                             },
                             "isActivated": true,
                             "schemeType": "apiKey",
-                            "required": true,
+                            "required": false,
                             "properties": [
                                 {
                                     "name": "schema",
@@ -93,16 +93,15 @@
                             "snippet": "parameter",
                             "additionalProperties": false,
                             "subtype": "structuralSchema",
-                            "parameterName": "name",
+                            "parameterName": "filter_word",
                             "childType": "parameter (query)",
                             "type": "document",
                             "GUID": "62bf7fd0-ec66-11ed-84c3-3f6611cab393",
                             "arrayItem": true,
                             "arrayParentType": "array",
-                            "displayName": "name",
-                            "sample": "John",
-                            "description": "The name the user wishes to be called by",
-                            "comments": "Comments",
+                            "displayName": "Filter Word",
+                            "sample": "penguin",
+                            "description": "Filter facts, such that only facts that contain this word can be returned",
                             "error": {}
                         }
                     ],
@@ -250,9 +249,8 @@
             "subtype": "requestBody",
             "GUID": "2e1a2c80-ec66-11ed-84c3-3f6611cab393",
             "bucketId": "269287f0-ec66-11ed-84c3-3f6611cab393",
-            "operationId": "hello_get",
+            "operationId": "facts_get",
             "description": "Ask the server to say hello to you. Don't forget the \"name\" query param, which is required. Try it without if you want to see a 400 error.",
-            "summary": "Ask the server to say hello",
             "security": [
                 {
                     "GUID": "ab742b90-ec66-11ed-84c3-3f6611cab393"
@@ -267,347 +265,225 @@
                     "serverURL": "http://localhost:3000",
                     "serverDescription": "For use in local development"
                 }
+            ],
+            "summary": "Fetch a random fact of the day",
+            "childCollection": [
+                "60b751c0-ec7c-11ed-84c3-3f6611cab393"
             ]
         },
         {
-            "collectionName": "trace",
+            "collectionName": "200",
             "type": "object",
             "properties": [
                 {
-                    "name": "parameters",
+                    "name": "response",
                     "hackoladeMeta": {
-                        "disableAdd": false,
-                        "disableDelete": false,
-                        "disableAppend": true,
+                        "disableAdd": true,
                         "resetInsteadOfDelete": true,
-                        "disableChoices": true
-                    },
-                    "isActivated": true,
-                    "structureType": true,
-                    "schemeType": "apiKey",
-                    "required": false,
-                    "properties": [],
-                    "primaryKey": false,
-                    "additionalItems": true,
-                    "uniqueItems": false,
-                    "subtype": "anyParameter",
-                    "nullable": false,
-                    "childType": "array",
-                    "type": "array",
-                    "GUID": "966b53c1-ec6d-11ed-84c3-3f6611cab393"
-                },
-                {
-                    "name": "requestBody",
-                    "hackoladeMeta": {
-                        "disableAdd": false,
-                        "disableDelete": false,
-                        "disableAppend": true,
-                        "resetInsteadOfDelete": true,
-                        "disableChoices": true
+                        "disableAppend": true
                     },
                     "isActivated": true,
                     "schemeType": "apiKey",
                     "required": false,
                     "properties": [
                         {
-                            "name": "application/json",
+                            "name": "headers",
                             "hackoladeMeta": {
+                                "disableAppend": true,
                                 "disableReference": true
                             },
                             "isActivated": true,
+                            "structureType": true,
                             "schemeType": "apiKey",
                             "required": false,
-                            "properties": [
-                                {
-                                    "name": "schema",
-                                    "hackoladeMeta": {},
-                                    "isActivated": true,
-                                    "schemeType": "apiKey",
-                                    "required": false,
-                                    "primaryKey": false,
-                                    "properties": [],
-                                    "additionalProperties": false,
-                                    "additionalPropControl": "Boolean",
-                                    "additionalPropertiesObjectType": "integer",
-                                    "additionalPropertiesIntegerFormat": "int32",
-                                    "subtype": "schema",
-                                    "nullable": false,
-                                    "childType": "object",
-                                    "type": "document",
-                                    "GUID": "966b7ad2-ec6d-11ed-84c3-3f6611cab393"
-                                },
-                                {
-                                    "name": "examples",
-                                    "hackoladeMeta": {
-                                        "disableAppend": true,
-                                        "disableReference": true
-                                    },
-                                    "isActivated": true,
-                                    "structureType": true,
-                                    "schemeType": "apiKey",
-                                    "required": false,
-                                    "primaryKey": false,
-                                    "properties": [],
-                                    "additionalProperties": false,
-                                    "additionalPropControl": "Boolean",
-                                    "additionalPropertiesObjectType": "integer",
-                                    "additionalPropertiesIntegerFormat": "int32",
-                                    "subtype": "example",
-                                    "nullable": false,
-                                    "childType": "object",
-                                    "type": "document",
-                                    "GUID": "966b7ad3-ec6d-11ed-84c3-3f6611cab393"
-                                },
-                                {
-                                    "name": "encoding",
-                                    "hackoladeMeta": {
-                                        "disableAppend": true,
-                                        "disableReference": true
-                                    },
-                                    "isActivated": true,
-                                    "structureType": true,
-                                    "schemeType": "apiKey",
-                                    "required": false,
-                                    "primaryKey": false,
-                                    "properties": [],
-                                    "additionalProperties": false,
-                                    "additionalPropControl": "Boolean",
-                                    "additionalPropertiesObjectType": "integer",
-                                    "additionalPropertiesIntegerFormat": "int32",
-                                    "subtype": "encoding",
-                                    "nullable": false,
-                                    "childType": "object",
-                                    "type": "document",
-                                    "GUID": "966b7ad4-ec6d-11ed-84c3-3f6611cab393"
-                                }
-                            ],
-                            "ignore_z_value": true,
-                            "snippet": "media",
+                            "primaryKey": false,
+                            "properties": [],
                             "additionalProperties": false,
-                            "subtype": "structuralSchema",
-                            "childType": "media",
+                            "additionalPropControl": "Boolean",
+                            "additionalPropertiesObjectType": "integer",
+                            "additionalPropertiesIntegerFormat": "int32",
+                            "subtype": "header",
+                            "nullable": false,
+                            "childType": "object",
                             "type": "document",
-                            "GUID": "966b7ad1-ec6d-11ed-84c3-3f6611cab393"
-                        }
-                    ],
-                    "ignore_z_value": true,
-                    "additionalProperties": false,
-                    "snippet": "requestBody",
-                    "subtype": "media",
-                    "childType": "requestBody",
-                    "type": "document",
-                    "GUID": "966b7ad0-ec6d-11ed-84c3-3f6611cab393"
-                },
-                {
-                    "name": "callbacks",
-                    "hackoladeMeta": {
-                        "disableAdd": false,
-                        "disableDelete": false,
-                        "disableAppend": true,
-                        "resetInsteadOfDelete": true,
-                        "disableChoices": true
-                    },
-                    "isActivated": true,
-                    "schemeType": "apiKey",
-                    "required": false,
-                    "ignore_z_value": true,
-                    "additionalProperties": false,
-                    "structureType": true,
-                    "properties": [],
-                    "childType": "operationObject",
-                    "type": "document",
-                    "subtype": "callback",
-                    "GUID": "966b7ad5-ec6d-11ed-84c3-3f6611cab393"
-                }
-            ],
-            "definitions": {
-                "type": "definitions",
-                "properties": [],
-                "GUID": "966b2cb0-ec6d-11ed-84c3-3f6611cab393"
-            },
-            "isActivated": true,
-            "additionalProperties": false,
-            "entityType": "request",
-            "subtype": "requestBody",
-            "GUID": "96653940-ec6d-11ed-84c3-3f6611cab393",
-            "bucketId": "269287f0-ec66-11ed-84c3-3f6611cab393",
-            "description": "HTTP Method that has not been implemented in the scaffold. Use this method to test the 501 Not Implemented error Response",
-            "operationId": "DoesNotExist"
-        },
-        {
-            "collectionName": "delete",
-            "type": "object",
-            "properties": [
-                {
-                    "name": "parameters",
-                    "hackoladeMeta": {
-                        "disableAdd": false,
-                        "disableDelete": false,
-                        "disableAppend": true,
-                        "resetInsteadOfDelete": true,
-                        "disableChoices": true
-                    },
-                    "isActivated": true,
-                    "structureType": true,
-                    "schemeType": "apiKey",
-                    "required": false,
-                    "properties": [],
-                    "primaryKey": false,
-                    "additionalItems": true,
-                    "uniqueItems": false,
-                    "subtype": "anyParameter",
-                    "nullable": false,
-                    "childType": "array",
-                    "type": "array",
-                    "GUID": "2226cfc0-ec6e-11ed-84c3-3f6611cab393"
-                },
-                {
-                    "name": "requestBody",
-                    "hackoladeMeta": {
-                        "disableAdd": false,
-                        "disableDelete": false,
-                        "disableAppend": true,
-                        "resetInsteadOfDelete": true,
-                        "disableChoices": true
-                    },
-                    "isActivated": true,
-                    "schemeType": "apiKey",
-                    "required": false,
-                    "properties": [
+                            "GUID": "60bcf711-ec7c-11ed-84c3-3f6611cab393"
+                        },
                         {
-                            "name": "application/json",
+                            "name": "content",
                             "hackoladeMeta": {
+                                "disableAppend": true,
                                 "disableReference": true
                             },
                             "isActivated": true,
+                            "structureType": true,
                             "schemeType": "apiKey",
                             "required": false,
+                            "primaryKey": false,
                             "properties": [
                                 {
-                                    "name": "schema",
-                                    "hackoladeMeta": {},
-                                    "isActivated": true,
-                                    "schemeType": "apiKey",
-                                    "required": false,
-                                    "primaryKey": false,
-                                    "properties": [],
-                                    "additionalProperties": false,
-                                    "additionalPropControl": "Boolean",
-                                    "additionalPropertiesObjectType": "integer",
-                                    "additionalPropertiesIntegerFormat": "int32",
-                                    "subtype": "schema",
-                                    "nullable": false,
-                                    "childType": "object",
-                                    "type": "document",
-                                    "GUID": "2226cfc3-ec6e-11ed-84c3-3f6611cab393"
-                                },
-                                {
-                                    "name": "examples",
+                                    "name": "application/json",
                                     "hackoladeMeta": {
-                                        "disableAppend": true,
                                         "disableReference": true
                                     },
                                     "isActivated": true,
-                                    "structureType": true,
                                     "schemeType": "apiKey",
                                     "required": false,
-                                    "primaryKey": false,
-                                    "properties": [],
+                                    "properties": [
+                                        {
+                                            "name": "schema",
+                                            "hackoladeMeta": {},
+                                            "isActivated": true,
+                                            "schemeType": "apiKey",
+                                            "required": false,
+                                            "primaryKey": false,
+                                            "properties": [
+                                                {
+                                                    "name": "fact",
+                                                    "hackoladeMeta": {
+                                                        "disableAppend": false,
+                                                        "disableDelete": false,
+                                                        "disableReference": false,
+                                                        "resetInsteadOfDelete": false
+                                                    },
+                                                    "isActivated": true,
+                                                    "schemeType": "apiKey",
+                                                    "required": false,
+                                                    "primaryKey": false,
+                                                    "nullable": false,
+                                                    "type": "string",
+                                                    "GUID": "6d2ae160-ec7c-11ed-84c3-3f6611cab393",
+                                                    "description": "A random fact as a string of text",
+                                                    "sample": "The deepest underwater penguin dive is 1,772 feet by an Emperor Penguin",
+                                                    "error": {}
+                                                }
+                                            ],
+                                            "additionalProperties": false,
+                                            "additionalPropControl": "Boolean",
+                                            "additionalPropertiesObjectType": "integer",
+                                            "additionalPropertiesIntegerFormat": "int32",
+                                            "subtype": "schema",
+                                            "nullable": false,
+                                            "childType": "object",
+                                            "type": "document",
+                                            "GUID": "60bd1e21-ec7c-11ed-84c3-3f6611cab393"
+                                        },
+                                        {
+                                            "name": "examples",
+                                            "hackoladeMeta": {
+                                                "disableAppend": true,
+                                                "disableReference": true
+                                            },
+                                            "isActivated": true,
+                                            "structureType": true,
+                                            "schemeType": "apiKey",
+                                            "required": false,
+                                            "primaryKey": false,
+                                            "properties": [],
+                                            "additionalProperties": false,
+                                            "additionalPropControl": "Boolean",
+                                            "additionalPropertiesObjectType": "integer",
+                                            "additionalPropertiesIntegerFormat": "int32",
+                                            "subtype": "example",
+                                            "nullable": false,
+                                            "childType": "object",
+                                            "type": "document",
+                                            "GUID": "60bd1e22-ec7c-11ed-84c3-3f6611cab393"
+                                        },
+                                        {
+                                            "name": "encoding",
+                                            "hackoladeMeta": {
+                                                "disableAppend": true,
+                                                "disableReference": true
+                                            },
+                                            "isActivated": true,
+                                            "structureType": true,
+                                            "schemeType": "apiKey",
+                                            "required": false,
+                                            "primaryKey": false,
+                                            "properties": [],
+                                            "additionalProperties": false,
+                                            "additionalPropControl": "Boolean",
+                                            "additionalPropertiesObjectType": "integer",
+                                            "additionalPropertiesIntegerFormat": "int32",
+                                            "subtype": "encoding",
+                                            "nullable": false,
+                                            "childType": "object",
+                                            "type": "document",
+                                            "GUID": "60bd1e23-ec7c-11ed-84c3-3f6611cab393"
+                                        }
+                                    ],
+                                    "ignore_z_value": true,
+                                    "snippet": "media",
                                     "additionalProperties": false,
-                                    "additionalPropControl": "Boolean",
-                                    "additionalPropertiesObjectType": "integer",
-                                    "additionalPropertiesIntegerFormat": "int32",
-                                    "subtype": "example",
-                                    "nullable": false,
-                                    "childType": "object",
+                                    "subtype": "structuralSchema",
+                                    "childType": "media",
                                     "type": "document",
-                                    "GUID": "2226cfc4-ec6e-11ed-84c3-3f6611cab393"
-                                },
-                                {
-                                    "name": "encoding",
-                                    "hackoladeMeta": {
-                                        "disableAppend": true,
-                                        "disableReference": true
-                                    },
-                                    "isActivated": true,
-                                    "structureType": true,
-                                    "schemeType": "apiKey",
-                                    "required": false,
-                                    "primaryKey": false,
-                                    "properties": [],
-                                    "additionalProperties": false,
-                                    "additionalPropControl": "Boolean",
-                                    "additionalPropertiesObjectType": "integer",
-                                    "additionalPropertiesIntegerFormat": "int32",
-                                    "subtype": "encoding",
-                                    "nullable": false,
-                                    "childType": "object",
-                                    "type": "document",
-                                    "GUID": "2226cfc5-ec6e-11ed-84c3-3f6611cab393"
+                                    "GUID": "60bd1e20-ec7c-11ed-84c3-3f6611cab393"
                                 }
                             ],
-                            "ignore_z_value": true,
-                            "snippet": "media",
                             "additionalProperties": false,
-                            "subtype": "structuralSchema",
-                            "childType": "media",
+                            "additionalPropControl": "Boolean",
+                            "additionalPropertiesObjectType": "integer",
+                            "additionalPropertiesIntegerFormat": "int32",
+                            "subtype": "media",
+                            "nullable": false,
+                            "childType": "object",
                             "type": "document",
-                            "GUID": "2226cfc2-ec6e-11ed-84c3-3f6611cab393"
+                            "GUID": "60bcf712-ec7c-11ed-84c3-3f6611cab393"
+                        },
+                        {
+                            "name": "links",
+                            "hackoladeMeta": {
+                                "disableAppend": true,
+                                "disableReference": true
+                            },
+                            "isActivated": true,
+                            "structureType": true,
+                            "schemeType": "apiKey",
+                            "required": false,
+                            "primaryKey": false,
+                            "properties": [],
+                            "additionalProperties": false,
+                            "additionalPropControl": "Boolean",
+                            "additionalPropertiesObjectType": "integer",
+                            "additionalPropertiesIntegerFormat": "int32",
+                            "subtype": "link",
+                            "nullable": false,
+                            "childType": "object",
+                            "type": "document",
+                            "GUID": "60bd1e24-ec7c-11ed-84c3-3f6611cab393"
                         }
                     ],
                     "ignore_z_value": true,
+                    "snippet": "response",
+                    "subtype": "snippetChildrenOnly",
                     "additionalProperties": false,
-                    "snippet": "requestBody",
-                    "subtype": "media",
-                    "childType": "requestBody",
+                    "childType": "response",
                     "type": "document",
-                    "GUID": "2226cfc1-ec6e-11ed-84c3-3f6611cab393"
-                },
-                {
-                    "name": "callbacks",
-                    "hackoladeMeta": {
-                        "disableAdd": false,
-                        "disableDelete": false,
-                        "disableAppend": true,
-                        "resetInsteadOfDelete": true,
-                        "disableChoices": true
-                    },
-                    "isActivated": true,
-                    "schemeType": "apiKey",
-                    "required": false,
-                    "ignore_z_value": true,
-                    "additionalProperties": false,
-                    "structureType": true,
-                    "properties": [],
-                    "childType": "operationObject",
-                    "type": "document",
-                    "subtype": "callback",
-                    "GUID": "2226f6d0-ec6e-11ed-84c3-3f6611cab393"
+                    "GUID": "60bcf710-ec7c-11ed-84c3-3f6611cab393"
                 }
             ],
             "definitions": {
                 "type": "definitions",
                 "properties": [],
-                "GUID": "22265a90-ec6e-11ed-84c3-3f6611cab393"
+                "GUID": "60bca8f0-ec7c-11ed-84c3-3f6611cab393"
             },
             "isActivated": true,
             "additionalProperties": false,
-            "entityType": "request",
-            "subtype": "requestBody",
-            "GUID": "22206720-ec6e-11ed-84c3-3f6611cab393",
+            "entityType": "response",
+            "subtype": "response",
+            "GUID": "60b751c0-ec7c-11ed-84c3-3f6611cab393",
             "bucketId": "269287f0-ec66-11ed-84c3-3f6611cab393",
-            "comments": "Test endpoint that should always throw an exception server side",
-            "operationId": "hello_delete"
+            "parentCollection": "2e1a2c80-ec66-11ed-84c3-3f6611cab393"
         }
     ],
     "buckets": [
         {
-            "name": "/hello",
+            "name": "/facts",
             "type": "bucket",
             "collectionIds": [
                 "2e1a2c80-ec66-11ed-84c3-3f6611cab393",
-                "96653940-ec6d-11ed-84c3-3f6611cab393",
-                "22206720-ec6e-11ed-84c3-3f6611cab393"
+                "60b751c0-ec7c-11ed-84c3-3f6611cab393"
             ],
             "backgroundColor": {
                 "r": 216,
@@ -618,8 +494,8 @@
             "show": true,
             "isActivated": true,
             "GUID": "269287f0-ec66-11ed-84c3-3f6611cab393",
-            "description": "The only endpoint here is a GET. You should try it.",
-            "summary": "Server Hello"
+            "description": "Use this endpoint to get a random fact",
+            "summary": "Random Fact"
         }
     ],
     "views": [],
@@ -637,7 +513,7 @@
         "18dbc9f2-ec66-11ed-84c3-3f6611cab393": "links",
         "18dbf100-ec66-11ed-84c3-3f6611cab393": "callbacks",
         "18dc3f20-ec66-11ed-84c3-3f6611cab393": "Specification Extensions",
-        "269287f0-ec66-11ed-84c3-3f6611cab393": "/hello",
+        "269287f0-ec66-11ed-84c3-3f6611cab393": "/facts",
         "2e1f0e80-ec66-11ed-84c3-3f6611cab393": "parameters",
         "2e1f0e81-ec66-11ed-84c3-3f6611cab393": "requestBody",
         "2e1f3593-ec66-11ed-84c3-3f6611cab393": "callbacks",
@@ -645,14 +521,10 @@
         "62c79620-ec66-11ed-84c3-3f6611cab393": "schema",
         "62c88080-ec66-11ed-84c3-3f6611cab393": "content",
         "62c96ae0-ec66-11ed-84c3-3f6611cab393": "examples",
-        "966b53c1-ec6d-11ed-84c3-3f6611cab393": "parameters",
-        "966b7ad0-ec6d-11ed-84c3-3f6611cab393": "requestBody",
-        "966b7ad5-ec6d-11ed-84c3-3f6611cab393": "callbacks",
-        "96653940-ec6d-11ed-84c3-3f6611cab393": "trace",
-        "2226cfc0-ec6e-11ed-84c3-3f6611cab393": "parameters",
-        "2226cfc1-ec6e-11ed-84c3-3f6611cab393": "requestBody",
-        "2226f6d0-ec6e-11ed-84c3-3f6611cab393": "callbacks",
-        "22206720-ec6e-11ed-84c3-3f6611cab393": "delete"
+        "60bcf710-ec7c-11ed-84c3-3f6611cab393": "response",
+        "60b751c0-ec7c-11ed-84c3-3f6611cab393": "200",
+        "6d2ae160-ec7c-11ed-84c3-3f6611cab393": "fact",
+        "57ffb050-ec8a-11ed-84c3-3f6611cab393": "fact"
     },
     "definitions": {
         "type": "definitions",
@@ -672,7 +544,28 @@
                 "ignore_z_value": true,
                 "additionalProperties": false,
                 "structureType": true,
-                "properties": [],
+                "properties": [
+                    {
+                        "name": "fact",
+                        "hackoladeMeta": {
+                            "disableDelete": false,
+                            "disableAppend": false,
+                            "resetInsteadOfDelete": false,
+                            "displayNameFromField": false
+                        },
+                        "isActivated": true,
+                        "schemeType": "apiKey",
+                        "required": false,
+                        "primaryKey": false,
+                        "nullable": false,
+                        "type": "string",
+                        "GUID": "57ffb050-ec8a-11ed-84c3-3f6611cab393",
+                        "error": {
+                            "name": false,
+                            "code": false
+                        }
+                    }
+                ],
                 "childType": "componentObject",
                 "type": "document",
                 "subtype": "schema",
@@ -906,7 +799,7 @@
         "contactName": "Jason Chambers"
     },
     "code": "Scaffold",
-    "lastModifTS": "2023-05-07T00:29:17.587Z",
+    "lastModifTS": "2023-05-07T03:50:46.409Z",
     "persistenceSchemaVersion": "5",
     "isCreatedByPlugin": true,
     "pluginInformation": {
@@ -923,33 +816,25 @@
                 "erd": [
                     {
                         "GUID": "2e1a2c80-ec66-11ed-84c3-3f6611cab393",
-                        "x": 281,
-                        "y": 287,
-                        "width": 281,
+                        "x": 177,
+                        "y": 172,
+                        "width": 257,
                         "height": 231,
                         "color": {}
                     },
                     {
-                        "GUID": "96653940-ec6d-11ed-84c3-3f6611cab393",
-                        "x": 611,
-                        "y": 321,
-                        "width": 257,
-                        "height": 159,
-                        "color": {}
-                    },
-                    {
-                        "GUID": "22206720-ec6e-11ed-84c3-3f6611cab393",
-                        "x": 920,
-                        "y": 309,
-                        "width": 257,
-                        "height": 159,
+                        "GUID": "60b751c0-ec7c-11ed-84c3-3f6611cab393",
+                        "x": 171.5,
+                        "y": 433,
+                        "width": 268,
+                        "height": 195,
                         "color": {}
                     }
                 ],
                 "buckets": [
                     {
-                        "x": 241,
-                        "y": 247,
+                        "x": 131.5,
+                        "y": 132,
                         "GUID": "269287f0-ec66-11ed-84c3-3f6611cab393"
                     }
                 ],
@@ -959,9 +844,7 @@
                     "childField": [],
                     "parentField": []
                 },
-                "selectedCollections": [
-                    "22206720-ec6e-11ed-84c3-3f6611cab393"
-                ],
+                "selectedCollections": [],
                 "displayColorPicker": false,
                 "graphView": {
                     "erd": [],
