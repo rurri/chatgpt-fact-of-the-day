@@ -1,0 +1,30 @@
+test:
+  handler: src/lambdas/test.handler
+  events:
+    - http:
+        path: test
+        method: get
+
+api:
+  handler: src/lambdas/openapi-backend-handler.handler
+  vpc:
+    securityGroupIds:
+      - Fn::ImportValue: '${self:custom.stage}-${self:service}-LambdaSecurityGroup'
+    subnetIds:
+      - Fn::ImportValue: '${self:custom.stage}-${self:service}-PrivateSubnetA'
+      - Fn::ImportValue: '${self:custom.stage}-${self:service}-PrivateSubnetB'
+      - Fn::ImportValue: '${self:custom.stage}-${self:service}-PrivateSubnetC'
+
+  events:
+    - http:
+        path: /api/{proxy+}
+        method: ANY
+
+
+getOpenAPIDoc:
+  handler: src/lambdas/get-openapi-doc.handler
+  events:
+    - http:
+        path: /api/openapi
+        method: GET
+

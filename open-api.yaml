@@ -1,0 +1,46 @@
+openapi: 3.0.3
+info:
+  title: Open-API Serverless Scaffold
+  description: This is a baseline open-api.yaml for scaffolding new projects
+  contact:
+    name: Jason Chambers
+  license:
+    name: MIT
+    url: 'https://opensource.org/license/mit/'
+  version: '1.0'
+paths:
+  /hello:
+    get:
+      summary: Ask the server to say hello
+      description: >-
+        Ask the server to say hello to you. Don't forget the "name" query param,
+        which is required. Try it without if you want to see a 400 error.
+      operationId: hello_get
+      parameters:
+        - name: name
+          in: query
+          description: The name the user wishes to be called by
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+          example: John
+      responses: {}
+      security: []
+      servers:
+        - url: 'http://localhost:3000'
+          description: For use in local development
+    trace:
+      description: >-
+        HTTP Method that has not been implemented in the scaffold. Use this
+        method to test the 501 Not Implemented error Response
+      operationId: DoesNotExist
+      responses: {}
+    delete:
+      operationId: hello_delete
+      responses: {}
+    summary: Server Hello
+    description: The only endpoint here is a GET. You should try it.
+components: {}
+

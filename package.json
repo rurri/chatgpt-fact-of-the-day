@@ -1,0 +1,33 @@
+{
+  "name": "serverless-open-api-hello-world",
+  "version": "1.0.0",
+  "description": "A Basic Serverless Lambda Scaffold for APIs that strictly adhear to an open-api.yaml",
+  "main": "index.js",
+  "scripts": {
+    "start": "sls offline",
+    "create-migration": "./node_modules/db-migrate/bin/db-migrate -e local --config ./migrations/config/database.json create",
+    "migration": "./node_modules/db-migrate/bin/db-migrate -e local --config ./migrations/config/database.json --migrations-dir ./migrations",
+    "deploy": "sls deploy",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rurri/serverless-open-api-hello-world.git"
+  },
+  "author": "Jason Chambers",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rurri/serverless-open-api-hello-world/issues"
+  },
+  "homepage": "https://github.com/rurri/serverless-open-api-hello-world#readme",
+  "dependencies": {
+    "openapi-backend": "^5.9.2",
+    "require-all": "^3.0.0",
+    "winston": "^3.8.2"
+  },
+  "devDependencies": {
+    "serverless": "^3.30.1",
+    "serverless-offline": "^12.0.4",
+    "serverless-prune-plugin": "^2.0.2"
+  }
+}

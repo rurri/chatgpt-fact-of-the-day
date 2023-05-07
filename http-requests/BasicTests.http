@@ -1,0 +1,35 @@
+
+###
+## Basic Test endpoint. Does NOT use open-api.yaml
+## Use this to validate the server is online and to rule in/out issues with open-api.yaml
+GET http://localhost:3000/dev/test
+Accept: application/json
+
+###
+## Returns the open-api.yaml file. This can be used as a source for a pretty API view
+##
+GET http://localhost:3000/dev/api/openapi
+
+###
+## The Hello World API Response. This is a basic test, but it requires that the open-api.yaml file be valid and that everything is wired up proerply.
+GET http://localhost:3000/dev/api/hello?name=Jason
+
+###
+## Test the method not implemented yet flow
+TRACE http://localhost:3000/dev/api/hello
+
+###
+## Test the Not Found Flow
+GET http://localhost:3000/dev/api/DoesNotExist
+
+###
+## Test the Server Side Error Flow
+DELETE http://localhost:3000/dev/api/hello
+
+###
+## Test the validation error flow (400)
+GET http://localhost:3000/dev/api/hello?name=Jason&age=1000
+
+###
+## Test the Method not allowed error flow (405)
+PUT http://localhost:3000/dev/api/hello
