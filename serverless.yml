@@ -1,4 +1,4 @@
-service: serverless-open-api-hello-world
+service: chatgpt-fact-of-the-day
 
 plugins:
   - serverless-prune-plugin

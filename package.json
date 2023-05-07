@@ -1,26 +1,24 @@
 {
-  "name": "serverless-open-api-hello-world",
+  "name": "chatgpt-fact-of-the-day",
   "version": "1.0.0",
-  "description": "A Basic Serverless Lambda Scaffold for APIs that strictly adhear to an open-api.yaml",
+  "description": "A Basic Serverless API with OpenAPI 3.0 and Serverless Framework To test ChatGPT Plugin Development",
   "main": "index.js",
   "scripts": {
     "start": "sls offline",
-    "create-migration": "./node_modules/db-migrate/bin/db-migrate -e local --config ./migrations/config/database.json create",
-    "migration": "./node_modules/db-migrate/bin/db-migrate -e local --config ./migrations/config/database.json --migrations-dir ./migrations",
     "deploy": "sls deploy",
     "sls": "sls",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rurri/serverless-open-api-hello-world.git"
+    "url": "git+https://github.com/rurri/chatgpt-fact-of-the-day.git"
   },
   "author": "Jason Chambers",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rurri/serverless-open-api-hello-world/issues"
+    "url": "https://github.com/rurri/chatgpt-fact-of-the-day/issues"
   },
-  "homepage": "https://github.com/rurri/serverless-open-api-hello-world#readme",
+  "homepage": "https://github.com/rurri/chatgpt-fact-of-the-day#readme",
   "dependencies": {
     "openapi-backend": "^5.9.2",
     "require-all": "^3.0.0",
