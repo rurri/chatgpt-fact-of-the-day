@@ -799,7 +799,14 @@
         "contactName": "Jason Chambers"
     },
     "code": "Scaffold",
-    "lastModifTS": "2023-05-07T03:50:46.409Z",
+    "servers": [
+        {
+            "GUID": "fa4bb160-ec8a-11ed-84c3-3f6611cab393",
+            "serverURL": "http://localhost:3000/api",
+            "serverDescription": "Localhost"
+        }
+    ],
+    "lastModifTS": "2023-05-07T04:28:22.705Z",
     "persistenceSchemaVersion": "5",
     "isCreatedByPlugin": true,
     "pluginInformation": {
